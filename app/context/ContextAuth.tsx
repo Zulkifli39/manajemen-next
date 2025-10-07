@@ -1,8 +1,8 @@
 "use client";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
-import {useAuth} from "../context/AuthProvider";
-import {loginUser, registerUser} from "@/lib/api";
+import {useAuth} from "./AuthProvider";
+import {loginUser, registerUser} from "@/lib/auth";
 
 export default function ContextAuth({type}: {type: "login" | "register"}) {
   const router = useRouter();
@@ -13,35 +13,20 @@ export default function ContextAuth({type}: {type: "login" | "register"}) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       if (type === "login") {
         const res = await loginUser(form);
 
         if (!res.username || !res.role || !res.token) {
-          throw new Error("Respon server tidak lengkap (username/role/token hilang)");
+          throw new Error("Respon server tidak lengkap");
         }
 
-        login({
-          username: res.username,
-          role: res.role,
-          token: res.token,
-        });
-
-        if (res.role === "pemilik" || res.role === "employee") {
-          router.push("/dashboard");
-        } else {
-          router.push("/user");
-        }
+        login(res);
+        router.push(res.role === "pemilik" ? "/dashboard" : "/user");
       } else {
         const res = await registerUser(form);
-
-        if (res?.success) {
-          alert("✅ Register berhasil, silakan login!");
-          router.push("/auth/login");
-        } else {
-          throw new Error(res?.message || "Register gagal");
-        }
+        alert(res?.message || "Register berhasil, silakan login!");
+        router.push("/login");
       }
     } catch (err: any) {
       alert(err.message);
@@ -86,25 +71,27 @@ export default function ContextAuth({type}: {type: "login" | "register"}) {
           {loading ? "Loading..." : type === "login" ? "Login" : "Register"}
         </button>
 
-        {type === "login" ? (
-          <p className="text-sm text-center text-gray-600">
-            Belum punya akun?{" "}
-            <span
-              onClick={() => router.push("/register")}
-              className="text-yellow-600 font-medium hover:underline cursor-pointer">
-              Daftar sekarang
-            </span>
-          </p>
-        ) : (
-          <p className="text-sm text-center text-gray-600">
-            Sudah punya akun?{" "}
-            <span
-              onClick={() => router.push("/login")}
-              className="text-yellow-600 font-medium hover:underline cursor-pointer">
-              Login di sini
-            </span>
-          </p>
-        )}
+        <p className="text-sm text-center text-gray-600">
+          {type === "login" ? (
+            <>
+              Belum punya akun?{" "}
+              <span
+                onClick={() => router.push("/auth/register")}
+                className="text-yellow-600 font-medium hover:underline cursor-pointer">
+                Daftar sekarang
+              </span>
+            </>
+          ) : (
+            <>
+              Sudah punya akun?{" "}
+              <span
+                onClick={() => router.push("/auth/login")}
+                className="text-yellow-600 font-medium hover:underline cursor-pointer">
+                Login di sini
+              </span>
+            </>
+          )}
+        </p>
       </form>
     </div>
   );

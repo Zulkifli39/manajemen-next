@@ -8,18 +8,15 @@ export function AuthProvider({children}) {
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
+    if (savedUser) setUser(JSON.parse(savedUser));
   }, []);
 
   const login = (data) => {
     const userData = {
-      username: data.username || "", // fallback kosong kalau backend ga kasih
-      role: data.role || "user", // default role "user"
-      token: data.token || data.accessToken || "", // support kalau backend pakai accessToken
+      username: data.username || "",
+      role: data.role || "user",
+      token: data.token || "",
     };
-
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
   };
