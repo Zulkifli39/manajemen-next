@@ -5,6 +5,7 @@ import {useRouter} from "next/navigation";
 import {ToastContainer, toast} from "react-toastify";
 import {createKaryawan, updateKaryawan} from "@/lib/karyawan";
 import SubmitButtonForm from "@/components/submit-button-form";
+import {Button} from "@/components/ui/button";
 
 interface FormKaryawanProps {
   type?: "ADD" | "EDIT";
@@ -74,7 +75,7 @@ export default function FormKaryawan({type = "ADD", defaultValues}: FormKaryawan
     <>
       <form
         onSubmit={handleSubmit}
-        className="max-w-xl mx-auto p-6 bg-white shadow-md rounded-xl border border-gray-100 space-y-5">
+        className=" mx-auto p-6 bg-white shadow-md rounded-xl border border-gray-100 space-y-5">
         <h2 className="text-2xl font-semibold text-gray-800 border-b pb-3">
           {type === "EDIT" ? "✏️ Edit Data Karyawan" : "➕ Tambah Karyawan"}
         </h2>
@@ -173,6 +174,12 @@ export default function FormKaryawan({type = "ADD", defaultValues}: FormKaryawan
         </div>
 
         <SubmitButtonForm label={type === "EDIT" ? "Simpan Perubahan" : "Tambah Karyawan"} loading={loading} />
+        <Button
+          type="button"
+          className="w-full bg-red-400 text-white hover:bg-red-500 cu./rsor-pointer"
+          onClick={() => router.push("/dashboard/karyawan")}>
+          Cancel
+        </Button>
       </form>
 
       <ToastContainer />

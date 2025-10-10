@@ -71,7 +71,7 @@ export default function KaryawanPage() {
   if (error) return <p className="p-6 text-red-500">Error: {error}</p>;
 
   return (
-    <div className="p-6">
+    <div className="">
       <KaryawanTable data={data} />
     </div>
   );

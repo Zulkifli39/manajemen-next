@@ -1,5 +1,5 @@
 "use client";
-
+import {useState} from "react";
 import Link from "next/link";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Edit} from "lucide-react";
@@ -19,32 +19,20 @@ interface Karyawan {
 }
 
 export function KaryawanTable({data}: {data?: Karyawan[]}) {
-  const rows = Array.isArray(data) ? data : [];
+  const [rows, setRows] = useState<Karyawan[]>(Array.isArray(data) ? data : []);
 
-  // 🔹 Helper untuk format waktu agar tampil "HH:MM"
-  const formatTime = (time: string | null) => {
-    if (!time) return "-";
-    try {
-      // Jika format dari backend adalah "08:00:00"
-      return time.slice(0, 5); // ambil "08:00"
-    } catch {
-      return "-";
-    }
-  };
+  // helper
+  const formatTime = (time: string | null) => (time ? time.slice(0, 5) : "-");
+  const formatGender = (jk: string | null) => (jk === "L" ? "Laki-laki" : jk === "P" ? "Perempuan" : "-");
 
-  // 🔹 Ubah enum ke teks agar lebih mudah dibaca
-  const formatGender = (jk: string | null) => {
-    if (!jk) return "-";
-    if (jk === "L") return "Laki-laki";
-    if (jk === "P") return "Perempuan";
-    return jk; // fallback
+  const handleDeleteSuccess = (id: number) => {
+    setRows((prev) => prev.filter((k) => k.id !== id)); // hapus dari state, tanpa reload
   };
 
   return (
     <div className="bg-white shadow-lg rounded-xl p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-800">Daftar Karyawan</h2>
-
         <Link href="/dashboard/karyawan/create">
           <Button className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold shadow-md rounded-lg px-4 py-2">
             + Tambah Karyawan
@@ -52,24 +40,22 @@ export function KaryawanTable({data}: {data?: Karyawan[]}) {
         </Link>
       </div>
 
-      {/* Table Karyawan */}
       <div className="overflow-x-auto">
         <Table className="min-w-full">
           <TableHeader>
-            <TableRow className="bg-yellow-500 text-center">
-              <TableHead className="text-white">ID</TableHead>
-              <TableHead className="text-white">Nama</TableHead>
-              <TableHead className="text-white">Jenis Kelamin</TableHead>
-              <TableHead className="text-white">Alamat</TableHead>
-              <TableHead className="text-white">No HP</TableHead>
-              <TableHead className="text-white">Jam Masuk</TableHead>
-              <TableHead className="text-white">Jam Keluar</TableHead>
-              <TableHead className="text-white">Total Cuti</TableHead>
-              <TableHead className="text-white">Sisa Cuti</TableHead>
+            <TableRow className=" bg-yellow-500 hover:bg-yellow-500 text-center">
+              <TableHead className="text-white text-center">ID</TableHead>
+              <TableHead className="text-white text-center">Nama</TableHead>
+              <TableHead className="text-white text-center">Jenis Kelamin</TableHead>
+              <TableHead className="text-white text-center">Alamat</TableHead>
+              <TableHead className="text-white text-center">No HP</TableHead>
+              <TableHead className="text-white text-center">Jam Masuk</TableHead>
+              <TableHead className="text-white text-center">Jam Keluar</TableHead>
+              <TableHead className="text-white text-center">Total Cuti</TableHead>
+              <TableHead className="text-white text-center">Sisa Cuti</TableHead>
               <TableHead className="text-white text-center">Aksi</TableHead>
             </TableRow>
           </TableHeader>
-
           <TableBody>
             {rows.length > 0 ? (
               rows.map((k, index) => (
@@ -95,7 +81,7 @@ export function KaryawanTable({data}: {data?: Karyawan[]}) {
                         </Button>
                       </Link>
 
-                      <DeleteKaryawanForm id={k.id} onSuccess={() => window.location.reload()} />
+                      <DeleteKaryawanForm id={k.id} onSuccess={() => handleDeleteSuccess(k.id)} />
                     </div>
                   </TableCell>
                 </TableRow>

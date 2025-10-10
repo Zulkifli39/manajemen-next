@@ -1,4 +1,5 @@
 "use client";
+
 import {LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer} from "recharts";
 
 const data = [
@@ -13,24 +14,24 @@ const data = [
 
 export default function DashboardPage() {
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6">
       <h1 className="text-2xl font-bold">Dashboard</h1>
 
       {/* Card Statistik */}
-      <div className="grid grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white p-4 rounded-lg shadow text-center">
           <p className="text-gray-500">Total Karyawan</p>
           <h2 className="text-xl font-bold">125</h2>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow">
+        <div className="bg-white p-4 rounded-lg shadow text-center">
           <p className="text-gray-500">Total Cuti</p>
           <h2 className="text-xl font-bold">32</h2>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow">
+        <div className="bg-white p-4 rounded-lg shadow text-center">
           <p className="text-gray-500">Total Pendapatan</p>
           <h2 className="text-xl font-bold">Rp 500M</h2>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow">
+        <div className="bg-white p-4 rounded-lg shadow text-center">
           <p className="text-gray-500">Rata-rata Pendapatan</p>
           <h2 className="text-xl font-bold">Rp 4jt</h2>
         </div>
@@ -38,8 +39,8 @@ export default function DashboardPage() {
 
       {/* Grafik */}
       <div className="bg-white p-6 rounded-lg shadow">
-        <h2 className="text-lg font-semibold">Grafik Pendapatan</h2>
-        <p className="text-2xl font-bold text-yellow-600">Rp 500.000.000</p>
+        <h2 className="text-lg font-semibold mb-2">Grafik Pendapatan</h2>
+        <p className="text-2xl font-bold text-yellow-600 mb-4">Rp 500.000.000</p>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={data}>
             <XAxis dataKey="name" />

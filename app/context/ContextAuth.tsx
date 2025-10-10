@@ -22,7 +22,7 @@ export default function ContextAuth({type}: {type: "login" | "register"}) {
         }
 
         login(res);
-        router.push(res.role === "pemilik" ? "/dashboard" : "/user");
+        router.push("/dashboard");
       } else {
         const res = await registerUser(form);
         alert(res?.message || "Register berhasil, silakan login!");
@@ -76,7 +76,7 @@ export default function ContextAuth({type}: {type: "login" | "register"}) {
             <>
               Belum punya akun?{" "}
               <span
-                onClick={() => router.push("/auth/register")}
+                onClick={() => router.push("/register")}
                 className="text-yellow-600 font-medium hover:underline cursor-pointer">
                 Daftar sekarang
               </span>
@@ -85,7 +85,7 @@ export default function ContextAuth({type}: {type: "login" | "register"}) {
             <>
               Sudah punya akun?{" "}
               <span
-                onClick={() => router.push("/auth/login")}
+                onClick={() => router.push("/login")}
                 className="text-yellow-600 font-medium hover:underline cursor-pointer">
                 Login di sini
               </span>

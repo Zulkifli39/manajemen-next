@@ -39,7 +39,7 @@ export default function EditKaryawanPage() {
   if (!karyawan) return <p className="p-6">Loading data karyawan...</p>;
 
   return (
-    <div className="p-6">
+    <div className="">
       <FormKaryawan type="EDIT" defaultValues={karyawan} />
     </div>
   );
